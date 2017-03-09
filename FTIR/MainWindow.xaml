@@ -1,0 +1,185 @@
+﻿<Window x:Class="FTIR.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FTIR"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="ATR FTIR Software" Height="600" Width="900">
+
+    <Grid Background="DarkBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75*" />
+            <ColumnDefinition Width="25*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Row="0" Grid.Column="0" Content="Open">
+            </Button>
+
+            <xctk:DropDownButton Name="ddSave" Grid.Row="0" Grid.Column="1" Content="Save">
+                <xctk:DropDownButton.DropDownContent>
+                    <StackPanel Orientation="Vertical" Width="{Binding ElementName=ddSave, Path=ActualWidth}">
+                        <Button Content="Save as..." Width="{Binding ElementName=ddSave, Path=ActualWidth}"></Button>
+                        <Button Content="Save RAW..." Width="{Binding ElementName=ddSave, Path=ActualWidth}"></Button>
+                    </StackPanel>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
+
+            <!--<Button Grid.Row="0" Grid.Column="1" Content="Save">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Save as...">
+                            
+                        </MenuItem>
+                        <MenuItem Header="Save RAW data">
+
+                        </MenuItem>
+                        <MenuItem Header="Save as...">
+
+                        </MenuItem>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>-->
+
+            <Button Grid.Row="0" Grid.Column="2" Content="Load">
+            </Button>
+
+            <Button Grid.Row="0" Grid.Column="3" Content="Make measurement">
+            </Button>
+
+            <Button Name="btnSetBaseLine" Grid.Row="0" Grid.Column="4" Click="btnSetBaseLine_Click" >
+                <TextBlock HorizontalAlignment="Center">Set <LineBreak /> baseline</TextBlock>
+            </Button>
+
+            <Button Grid.Row="0" Grid.Column="5" Content="Compare" IsEnabled="{Binding Path=IsBaselineSetted}">
+            </Button>
+
+            <Button Name="btnSettings" Grid.Row="0" Grid.Column="6" Content="Settings" Click="btnSettings_Click">
+            </Button>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="35*"/>
+                <ColumnDefinition Width="65*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Sample name" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White" />
+
+            <TextBlock Text="Description" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White"/>
+
+            <TextBox Name="tbSampleName" Grid.Row="1" Grid.Column="1" />
+
+            <TextBox Name="tbSampleDescription" Grid.Row="2" Grid.Column="1" />
+
+        </Grid>
+
+        <TabControl Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
+            <TabItem Name="ti1">
+                <TabItem.Header>
+                    <TextBlock Text="General" />
+                </TabItem.Header>
+                <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3">
+
+                    <!--<ScrollViewer VerticalScrollBarVisibility="Visible" Height="150">-->
+                        <ListBox Name="lbLaboratoryElements" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="150">
+                            <!--ItemsSource="{Binding Path=libraryItems}"-->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Name}" Foreground="Black"/>                                        
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    <!--</ScrollViewer>-->
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Button Name="btnAddElement" Content="Add element" Grid.Column="0" Grid.Row="0" Height="30" Margin="5"/>
+                        <Button Name="btnOpenLibrary" Content="Open library" Grid.Column="1" Grid.Row="0" Height="30" Margin="5"/>
+                        <Button Name="btnSaveLibrary" Content="Save library" Grid.Column="2" Grid.Row="0" Height="30" Margin="5"/>
+                        <Button Name="btnSelectAll" Content="Select all" Grid.Column="0" Grid.Row="1" Height="30" Margin="5"/>
+                        <Button Name="btnDeselectAll" Content="Deselect all" Grid.Column="1" Grid.Row="1" Height="30" Margin="5"/>
+                        <Button Name="btnRemoveUnselectedFromLibrary" Content="Remove unselected from library" Grid.Column="2" Grid.Row="1" Height="30" Margin="5"/>
+
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="ti2">
+                <TabItem.Header>
+                    <TextBlock Text="Spectrum" />
+                </TabItem.Header>
+                <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" >
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="ti3">
+                <TabItem.Header>
+                    <TextBlock Text="Other" />
+                </TabItem.Header>
+                <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" />
+            </TabItem>
+
+        </TabControl>
+
+        <DataGrid Name="comparisonGrid" Grid.Row="3" Grid.Column="0" HeadersVisibility="All" GridLinesVisibility="All" AutoGenerateColumns="False"
+                  ColumnHeaderHeight="25" RowHeight="20" HorizontalGridLinesBrush="DarkGray" Foreground="Black" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Score" Binding="{Binding Path=Score}" Width="20*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Library" Binding="{Binding Path=Library}" Width="25*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="25*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Comment" Binding="{Binding Path=Comment}" Width="35*" IsReadOnly="True"/>
+                <DataGridCheckBoxColumn Header="Plot" Width="40" IsReadOnly="False"/>
+                <DataGridCheckBoxColumn Header="Substract" Width="40" IsReadOnly="False"/>
+            </DataGrid.Columns>
+            <!--<DataGrid.Resources>
+                <col:ArrayList x:Key="comparisons" >
+
+                </col:ArrayList>
+            </DataGrid.Resources>-->
+        </DataGrid>
+
+        <local:LineChartExampleView Grid.Column="0" Grid.Row="1" />
+        <local:LineChartExampleView Grid.Column="0" Grid.Row="2" />
+
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Margin="5,0,5,0">
+            <TextBlock Text="Measurement progress" Foreground="White" VerticalAlignment="Center"/>
+            <ProgressBar Name="measuringPB"  Margin="5,5,5,5"/>
+        </StackPanel>
+
+
+    </Grid>
+</Window>
